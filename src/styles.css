@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~materialize-css/dist/css/materialize.min.css";
+
+.select-year li {
+  display: inline-block;
+  border-radius: 2px;
+  text-align: center;
+  vertical-align: top;
+  height: 30px;
+}
+
+.select-year li a,
+.select-year li span {
+  color: #444;
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 0 10px;
+  line-height: 30px;
+}
+
+.month thead tr th:first-child,
+.month thead tr th:last-child {
+  background: #ee6e73;
+  color: #fff;
+}
+
+.month tbody tr td a {
+  color: black;
+  padding: 7px 13px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.select-year li i {
+  font-size: 2rem;
+}
+
+.month .active {
+  border-radius: 50%;
+  background-color: #ee6e73;
+  color: #fff;
+  padding: 7px 13px;
+}
+
+.month .selected {
+  border: 1px solid #ee6e73;
+}
+
+.grid-year ul li {
+  display: inline-block;
+  padding: 10px 20px 10px 20px;
+}
+
+.grid-year ul li a {
+  color: black;
+  cursor: pointer;
+}

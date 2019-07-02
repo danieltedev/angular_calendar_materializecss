@@ -1,0 +1,3 @@
+interface TextAreaOption {
+  autoResize?: boolean;
+}

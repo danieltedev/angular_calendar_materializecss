@@ -1,0 +1,3 @@
+interface CharacterCounterOption {
+  option?: string;
+}

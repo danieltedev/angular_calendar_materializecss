@@ -1,21 +1,104 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+<ul class="select-year">
+  <li class="waves-effect">
+    <a (click)="previusMonthYear()">
+      <i class="material-icons">chevron_left</i>
+    </a>
   </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
+  <li class="waves-effect">
+    <a (click)="showModalMonth()">{{ monthYear.month }}</a>
   </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+  <li class="waves-effect">
+    <a (click)="showModal()">{{ monthYear.year }}</a>
+  </li>
+  <li class="waves-effect">
+    <a (click)="nextMonthYear()">
+      <i class="material-icons">chevron_right</i>
+    </a>
+  </li>
+  <li class="waves-effect">
+    <a (click)="today()">TODAY</a>
   </li>
 </ul>
+
+<table class="centered responsive-table month">
+  <thead>
+    <tr>
+      <th *ngFor="let day of weekdays">{{ day }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dayOfMonth of month">
+      <td><a [class.active]="dayOfMonth[0]?.current" [class.selected]="dayOfMonth[0]?.selected"
+          (click)="selectedDate(dayOfMonth[0])">{{ dayOfMonth[0]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[1]?.current" [class.selected]="dayOfMonth[1]?.selected"
+          (click)="selectedDate(dayOfMonth[1])">{{ dayOfMonth[1]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[2]?.current" [class.selected]="dayOfMonth[2]?.selected"
+          (click)="selectedDate(dayOfMonth[2])">{{ dayOfMonth[2]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[3]?.current" [class.selected]="dayOfMonth[3]?.selected"
+          (click)="selectedDate(dayOfMonth[3])">{{ dayOfMonth[3]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[4]?.current" [class.selected]="dayOfMonth[4]?.selected"
+          (click)="selectedDate(dayOfMonth[4])">{{ dayOfMonth[4]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[5]?.current" [class.selected]="dayOfMonth[5]?.selected"
+          (click)="selectedDate(dayOfMonth[5])">{{ dayOfMonth[5]?.day }}</a></td>
+      <td><a [class.active]="dayOfMonth[6]?.current" [class.selected]="dayOfMonth[6]?.selected"
+          (click)="selectedDate(dayOfMonth[6])">{{ dayOfMonth[6]?.day }}</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<div id="modal1" class="modal" [modal]="detalheOption" [(open)]="openModal">
+  <div class="modal-content">
+    <ul class="grid-year center">
+      <li *ngFor="let year of listYears">
+        <ul>
+          <li class="waves-effect">
+            <a (click)="selectedYear(year[0])">{{ year[0] }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedYear(year[1])">{{ year[1] }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedYear(year[2])">{{ year[2] }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedYear(year[3])">{{ year[3] }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedYear(year[4])">{{ year[4] }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="modal1" class="modal" [modal]="detalheOptionMonth" [(open)]="openModalMonth">
+    <div class="modal-content">
+      <ul class="grid-year center">
+        <li *ngFor="let month of listMonths">
+          <ul>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[0])">{{ month[0] }}</a>
+            </li>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[1])">{{ month[1] }}</a>
+            </li>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[2])">{{ month[2] }}</a>
+            </li>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[3])">{{ month[3] }}</a>
+            </li>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[4])">{{ month[4] }}</a>
+            </li>
+            <li class="waves-effect">
+              <a (click)="selectedMonth(month[5])">{{ month[5] }}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 <router-outlet></router-outlet>
