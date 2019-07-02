@@ -48,6 +48,14 @@
 
 <div id="modal1" class="modal" [modal]="detalheOption" [(open)]="openModal">
   <div class="modal-content">
+    <ul class="center change-range">
+      <li class="waves-effect">
+        <a (click)="lessTableYear()" ><i class="material-icons">expand_less</i></a>
+      </li>
+      <li class="waves-effect">
+        <a (click)="moreTableYear()" ><i class="material-icons">expand_more</i></a>
+      </li>
+    </ul>
     <ul class="grid-year center">
       <li *ngFor="let year of listYears">
         <ul>
@@ -73,32 +81,32 @@
 </div>
 
 <div id="modal1" class="modal" [modal]="detalheOptionMonth" [(open)]="openModalMonth">
-    <div class="modal-content">
-      <ul class="grid-year center">
-        <li *ngFor="let month of listMonths">
-          <ul>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[0])">{{ month[0] }}</a>
-            </li>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[1])">{{ month[1] }}</a>
-            </li>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[2])">{{ month[2] }}</a>
-            </li>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[3])">{{ month[3] }}</a>
-            </li>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[4])">{{ month[4] }}</a>
-            </li>
-            <li class="waves-effect">
-              <a (click)="selectedMonth(month[5])">{{ month[5] }}</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+  <div class="modal-content">
+    <ul class="grid-year center">
+      <li *ngFor="let month of listMonths">
+        <ul>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[0].id)">{{ month[0].name }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[1].id)">{{ month[1].name }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[2].id)">{{ month[2].name }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[3].id)">{{ month[3].name }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[4].id)">{{ month[4].name }}</a>
+          </li>
+          <li class="waves-effect">
+            <a (click)="selectedMonth(month[5].id)">{{ month[5].name }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
+</div>
 
 <router-outlet></router-outlet>

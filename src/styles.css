@@ -51,7 +51,8 @@
   padding: 10px 20px 10px 20px;
 }
 
-.grid-year ul li a {
+.grid-year ul li a,
+.change-range a {
   color: black;
   cursor: pointer;
 }
