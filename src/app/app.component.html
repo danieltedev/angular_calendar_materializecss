@@ -8,7 +8,7 @@
     <a (click)="showModalMonth()">{{ monthYear.month }}</a>
   </li>
   <li class="waves-effect">
-    <a (click)="showModal()">{{ monthYear.year }}</a>
+    <a (click)="showModalYear()">{{ monthYear.year }}</a>
   </li>
   <li class="waves-effect">
     <a (click)="nextMonthYear()">
@@ -28,51 +28,28 @@
   </thead>
   <tbody>
     <tr *ngFor="let dayOfMonth of month">
-      <td><a [class.active]="dayOfMonth[0]?.current" [class.selected]="dayOfMonth[0]?.selected"
-          (click)="selectedDate(dayOfMonth[0])">{{ dayOfMonth[0]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[1]?.current" [class.selected]="dayOfMonth[1]?.selected"
-          (click)="selectedDate(dayOfMonth[1])">{{ dayOfMonth[1]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[2]?.current" [class.selected]="dayOfMonth[2]?.selected"
-          (click)="selectedDate(dayOfMonth[2])">{{ dayOfMonth[2]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[3]?.current" [class.selected]="dayOfMonth[3]?.selected"
-          (click)="selectedDate(dayOfMonth[3])">{{ dayOfMonth[3]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[4]?.current" [class.selected]="dayOfMonth[4]?.selected"
-          (click)="selectedDate(dayOfMonth[4])">{{ dayOfMonth[4]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[5]?.current" [class.selected]="dayOfMonth[5]?.selected"
-          (click)="selectedDate(dayOfMonth[5])">{{ dayOfMonth[5]?.day }}</a></td>
-      <td><a [class.active]="dayOfMonth[6]?.current" [class.selected]="dayOfMonth[6]?.selected"
-          (click)="selectedDate(dayOfMonth[6])">{{ dayOfMonth[6]?.day }}</a></td>
+      <td *ngFor="let day of dayOfMonth">
+        <a [class.active]="day?.current" [class.selected]="day?.selected" (click)="selectedDate(day)">{{ day?.day }}</a>
+      </td>
     </tr>
   </tbody>
 </table>
 
-<div id="modal1" class="modal" [modal]="detalheOption" [(open)]="openModal">
+<div id="modalYear" class="modal" [modal]="modalOptionsYear" [(open)]="openModalYear">
   <div class="modal-content">
     <ul class="center change-range">
       <li class="waves-effect">
-        <a (click)="lessTableYear()" ><i class="material-icons">expand_less</i></a>
+        <a (click)="lessTableYear()"><i class="material-icons">expand_less</i></a>
       </li>
       <li class="waves-effect">
-        <a (click)="moreTableYear()" ><i class="material-icons">expand_more</i></a>
+        <a (click)="moreTableYear()"><i class="material-icons">expand_more</i></a>
       </li>
     </ul>
     <ul class="grid-year center">
-      <li *ngFor="let year of listYears">
+      <li *ngFor="let year of years">
         <ul>
-          <li class="waves-effect">
-            <a (click)="selectedYear(year[0])">{{ year[0] }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedYear(year[1])">{{ year[1] }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedYear(year[2])">{{ year[2] }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedYear(year[3])">{{ year[3] }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedYear(year[4])">{{ year[4] }}</a>
+          <li class="waves-effect" *ngFor="let line of year">
+            <a (click)="selectedYear(line)">{{ line }}</a>
           </li>
         </ul>
       </li>
@@ -80,32 +57,37 @@
   </div>
 </div>
 
-<div id="modal1" class="modal" [modal]="detalheOptionMonth" [(open)]="openModalMonth">
+<div id="modalMonth" class="modal" [modal]="modalOptionsMonth" [(open)]="openModalMonth">
   <div class="modal-content">
     <ul class="grid-year center">
-      <li *ngFor="let month of listMonths">
+      <li *ngFor="let month of months">
         <ul>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[0].id)">{{ month[0].name }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[1].id)">{{ month[1].name }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[2].id)">{{ month[2].name }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[3].id)">{{ month[3].name }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[4].id)">{{ month[4].name }}</a>
-          </li>
-          <li class="waves-effect">
-            <a (click)="selectedMonth(month[5].id)">{{ month[5].name }}</a>
+          <li class="waves-effect" *ngFor="let line of month">
+            <a (click)="selectedMonth(line?.id)">{{ line?.name }}</a>
           </li>
         </ul>
       </li>
     </ul>
+  </div>
+</div>
+
+<div id="modalDay" class="modal" [modal]="modalOptionsDay" [(open)]="openModalDay">
+  <div class="modal-content">
+    <h4>{{ daySelected?.dateFull | date:'fullDate' }}</h4>
+    <table>
+      <tbody>
+        <tr *ngFor="let hour of daySelected?.hours">
+          <td>{{ hour.hour }} hr</td>
+          <td colspan="3">teste</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

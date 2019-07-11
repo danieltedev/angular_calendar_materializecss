@@ -11,14 +11,16 @@ export class AppComponent implements OnInit {
 
   actualDate: Date = new Date();
   month: Array<Array<Day>> = new Array();
-  day: Array<Day> = new Array();
-  openModal: boolean;
+  daySelected: Day;
+  openModalDay: boolean;
   openModalMonth: boolean;
-  detalheOption: ModalOptions;
-  detalheOptionMonth: ModalOptions;
+  openModalYear: boolean;
+  modalOptionsDay: ModalOptions;
+  modalOptionsMonth: ModalOptions;
+  modalOptionsYear: ModalOptions;
 
-  listYears: Array<Array<number>> = new Array();
-  listMonths: Array<Array<Month>> = new Array();
+  years: Array<Array<number>> = new Array();
+  months: Array<Array<Month>> = new Array();
 
   weekdays: Array<string> = [
     'Sunday',
@@ -27,20 +29,10 @@ export class AppComponent implements OnInit {
     'Wednesday',
     'Thursday',
     'Friday',
-    'Saturday'
+    'Saturday',
   ];
 
-  selectMonth: { id: number, name: string };
   monthYear: { month: string, year: number };
-
-  changeMonthYear(date: Date): void {
-    const locale = 'en-us';
-
-    this.monthYear = {
-      month: date.toLocaleString(locale, { month: 'long' }).toUpperCase().substring(0, 3),
-      year: date.getFullYear()
-    };
-  }
 
   nextMonthYear(): void {
     let month = this.actualDate.getMonth();
@@ -49,7 +41,7 @@ export class AppComponent implements OnInit {
     month = month === 12 ? month - 11 : month + 1;
     this.actualDate = new Date(year, month, this.actualDate.getDate());
     this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
   }
 
   previusMonthYear(): void {
@@ -59,10 +51,12 @@ export class AppComponent implements OnInit {
     month = month === 12 ? month + 11 : month - 1;
     this.actualDate = new Date(year, month, this.actualDate.getDate());
     this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
   }
 
   selectedDate(day: Day): void {
+    this.daySelected = null;
+    this.openModalDay = false;
     this.month.forEach((m) => m.forEach((d) => {
       if (d !== null) {
         d.selected = false;
@@ -70,115 +64,32 @@ export class AppComponent implements OnInit {
 
       if (d && day.day === d.day) {
         d.selected = true;
+        this.daySelected = d;
+        this.openModalDay = true;
       }
     }));
   }
 
-  tableYears(currencyYear?: number): void {
-    let year = 0;
-    currencyYear = currencyYear ? currencyYear : this.actualDate.getFullYear();
-    this.listYears = new Array();
-    for (let i = 0; i < 5; i++) {
-      const years: Array<number> =  new Array();
-      for (let e = 0; e < 5; e++) {
-        years.push(currencyYear + year);
-        year++;
-      }
-      this.listYears.push(years);
-    }
-  }
-
-  tableMonth(): void {
-    const locale = 'en-us';
-    let month = 0;
-    this.listMonths = new Array();
-    for (let i = 0; i < 2; i++) {
-      const months: Array<Month> =  new Array();
-      for (let e = 0; e < 6; e++) {
-        const date = new Date(this.actualDate.getFullYear(), month, 1);
-        months.push({
-          id: date.getMonth(),
-          name: date.toLocaleString(locale, { month: 'long' }).toUpperCase().substring(0, 3)
-        });
-        month++;
-      }
-      this.listMonths.push(months);
-    }
+  showModalYear(): void {
+    this.tableYears();
+    this.openModalYear = true;
   }
 
   lessTableYear(): void {
-    const years = this.listYears[0];
-    const firstMonth = years[0] - 25;
+    const firstMonth = this.years[0][0] - 25;
     this.tableYears(firstMonth);
   }
 
   moreTableYear(): void {
-    const years = this.listYears[this.listYears.length - 1];
-    const firstMonth = years[years.length - 1] + 25;
-    debugger
+    const firstMonth = this.years.slice(-1).pop().slice(-1).pop() + 25;
     this.tableYears(firstMonth);
   }
 
   selectedYear(year: number) {
     this.actualDate = new Date(year, this.actualDate.getMonth(), this.actualDate.getDate());
     this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
-    this.openModal = false;
-  }
-
-  selectedMonth(month: number) {
-    this.actualDate = new Date(this.actualDate.getFullYear(), month, this.actualDate.getDate());
-    this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
-    this.openModalMonth = false;
-  }
-
-  private buildMonth(year: number, month: number, currentDay: number): void {
-    this.month = new Array();
-    const firstDate: Date = new Date(year, month, 1);
-    const lastDate: Date = new Date(year, month + 1, 0);
-    const allday = lastDate.getDate() + firstDate.getDay();
-    const totalRow = Math.trunc(allday / 7);
-    let day = 1;
-    for (let e = 0; e <= totalRow; e++) {
-      this.day = new Array();
-      for (let i = 0; i < 7; i++) {
-        if (e === 0 && i >= firstDate.getDay()) {
-          this.day.push({
-            day: day++
-          });
-        } else if (e > 0 && e < totalRow) {
-          this.day.push({
-            day: day++
-          });
-        } else if (e > 0 && i <= lastDate.getDay() && day <= lastDate.getDate()) {
-          this.day.push({
-            day: day++
-          });
-        } else {
-          this.day.push(null);
-        }
-      }
-      this.month.push(this.day);
-    }
-
-    this.month = this.month.filter((e) => e.filter((i) => {
-      if (i && month === new Date().getMonth() && year === new Date().getFullYear()) {
-        i.current = currentDay === i.day;
-      }
-      return i !== null;
-    }).length > 0);
-  }
-
-  today(): void {
-    this.actualDate = new Date();
-    this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
-  }
-
-  showModal(): void {
-    this.tableYears();
-    this.openModal = true;
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
+    this.openModalYear = false;
   }
 
   showModalMonth(): void {
@@ -186,18 +97,112 @@ export class AppComponent implements OnInit {
     this.openModalMonth = true;
   }
 
+  selectedMonth(month: number) {
+    this.actualDate = new Date(this.actualDate.getFullYear(), month, this.actualDate.getDate());
+    this.changeMonthYear(this.actualDate);
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
+    this.openModalMonth = false;
+  }
+
+  today(): void {
+    this.actualDate = new Date();
+    this.changeMonthYear(this.actualDate);
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
+  }
+
+  private getDay(date: Date): Day {
+    return {
+      day: date.getDate(),
+      dateFull: date,
+      current: date.getDate() === new Date().getDate()
+        && date.getMonth() === new Date().getMonth()
+        && date.getFullYear() === new Date().getFullYear(),
+      hours: new Array<HourDay>(24).fill({}).map((v, i) => {
+        v = { hour: i, minute: 0, second: 0 };
+        return v;
+      })
+    };
+  }
+
+  private buildMonth(year: number, month: number): void {
+    this.month = new Array();
+
+    let date = new Date(year, month, 0);
+    this.month = new Array(8).fill(new Array(7).fill(null)).map((v: Array<Day>) => {
+      return v.map((val: Day, ind: number) => {
+        date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+        if (ind >= date.getDay() && date.getMonth() === month) {
+          val = this.getDay(date);
+        } else {
+          date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+        }
+        return date.getMonth() === month ? val : null;
+      });
+    });
+
+    this.month = this.month.filter((e) => e.filter((i) => {
+      return i !== null;
+    }).length > 0);
+  }
+
+  private getMonth(date: Date, locale?: 'en-us'): Month {
+    return {
+      id: date.getMonth(),
+      name: date.toLocaleString(locale, { month: 'long' }).toUpperCase().substring(0, 3)
+    };
+  }
+
+  private tableMonth(): void {
+    const locale = 'en-us';
+    let month = 0;
+
+    this.months = new Array(2).fill(new Array(6).fill(null)).map((v: Array<Month>) => {
+      return v.map((val: Month) => {
+        const date = new Date(this.actualDate.getFullYear(), month, 1);
+        month++;
+        return val = this.getMonth(date, locale);
+      });
+    });
+  }
+
+  private changeMonthYear(date: Date): void {
+    const locale = 'en-us';
+    this.monthYear = {
+      month: date.toLocaleString(locale, { month: 'long' }).toUpperCase().substring(0, 3),
+      year: date.getFullYear()
+    };
+  }
+
+  private tableYears(currencyYear?: number): void {
+    currencyYear = currencyYear ? currencyYear : new Date().getFullYear();
+    let year = 0;
+    this.years = new Array(5).fill(new Array(5).fill(null)).map((v: Array<number>) => {
+      return v.map((val: number) => {
+        val = currencyYear + year;
+        year++;
+        return val;
+      });
+    });
+  }
+
   ngOnInit(): void {
     this.changeMonthYear(this.actualDate);
-    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth(), this.actualDate.getDate());
-    this.detalheOption = {
+    this.buildMonth(this.actualDate.getFullYear(), this.actualDate.getMonth());
+    this.modalOptionsYear = {
       onCloseStart: () => {
-        this.openModal = false;
+        this.openModalYear = false;
       }
     };
 
-    this.detalheOptionMonth = {
+    this.modalOptionsMonth = {
       onCloseStart: () => {
         this.openModalMonth = false;
+      }
+    };
+
+    this.modalOptionsDay = {
+      onCloseStart: () => {
+        this.openModalDay = false;
       }
     };
 

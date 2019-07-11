@@ -1,7 +1,9 @@
 interface Day {
   day?: number;
-  events?: Month;
+  dateFull?: Date;
+  events?: Array<EventDay>;
   current?: boolean;
   selected?: boolean;
   disabled?: boolean;
+  hours?: Array<HourDay>;
 }
